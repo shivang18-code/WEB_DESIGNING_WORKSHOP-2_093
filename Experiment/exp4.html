@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Result Calculator</title>
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+            background-color: #f0f8ff;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        input, button {
+            padding: 10px;
+            margin: 5px;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Student Result Calculator</h1>
+    <label>Enter Number of Subjects:</label><br>
+    <input type="number" id="subjects"><br>
+    <button onclick="calculateResult()">Calculate Result</button>
+    <div id="result"></div>
+</div>
+<script>
+function calculateResult() {
+    let n = document.getElementById("subjects").value;
+    let total = 0;
+    if (n <= 0) {
+        alert("Please enter a valid number of subjects!");
+        return;
+    }
+    for (let i = 1; i <= n; i++) {
+        let marks = parseFloat(prompt("Enter marks for subject " + i + ":"));
+        if (marks < 0 || marks > 100 || isNaN(marks)) {
+            alert("Invalid marks! Please enter between 0-100.");
+            i--;
+        } else {
+            total += marks;
+        }
+    }
+    let average = total / n;
+    let grade;
+    if (average >= 90) {
+        grade = "A+";
+    } else if (average >= 75) {
+        grade = "A";
+    } else if (average >= 60) {
+        grade = "B";
+    } else if (average >= 50) {
+        grade = "C";
+    } else {
+        grade = "F";
+    }
+    let resultStatus = (average >= 40) ? "Pass" : "Fail";
+    document.getElementById("result").innerHTML = `
+        Total Marks: ${total} <br>
+        Average Marks: ${average.toFixed(2)} <br>
+        Grade: ${grade} <br>
+        Result: ${resultStatus}
+    `;
+}
+</script>
+</body>
+</html>

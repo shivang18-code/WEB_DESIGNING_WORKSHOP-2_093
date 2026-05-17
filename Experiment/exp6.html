@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DOM Manipulation & Event Handling</title>
+  <style>
+    body{
+      font-family: Arial;
+      padding:20px;
+      background:white;
+    }
+    .container{
+      width:700px;
+      margin:auto;
+      padding:20px;
+      border:1px solid gray;
+    }
+    input, button{
+      padding:8px;
+      margin:5px;
+    }
+    button{
+      cursor:pointer;
+    }
+    #para{
+      margin-top:15px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1 id="heading">Welcome to JavaScript DOM</h1>
+  <input type="text" id="message" placeholder="Enter a message">
+  <br>
+  <button id="textBtn">Change Heading</button>
+  <button id="bgBtn">Change Background</button>
+  <button id="fontBtn">Change Font Size</button>
+  <button id="toggleBtn">Show / Hide Paragraph</button>
+  <button id="resetBtn">Reset Page</button>
+  <p id="para">
+    This paragraph will be changed dynamically using JavaScript events.
+  </p>
+</div>
+<script>
+  let heading = document.getElementById("heading");
+  let input = document.getElementById("message");
+  let para = document.getElementById("para");
+  document.getElementById("textBtn").onclick = function(){
+    heading.innerHTML = input.value;
+  };
+  document.getElementById("bgBtn").addEventListener("click", function(){
+    document.body.style.backgroundColor = "lightblue";
+  });
+  document.getElementById("fontBtn").onclick = function(){
+    para.style.fontSize = "25px";
+  };
+  document.getElementById("toggleBtn").onclick = function(){
+    if(para.style.display == "none"){
+      para.style.display = "block";
+    }
+    else{
+      para.style.display = "none";
+    }
+  };
+  document.getElementById("resetBtn").onclick = function(){
+    heading.innerHTML = "Welcome to JavaScript DOM";
+    document.body.style.backgroundColor = "white";
+    para.style.fontSize = "16px";
+    para.style.display = "block";
+    input.value = "";
+  };
+  input.onchange = function(){
+    alert("Input Changed: " + input.value);
+  };
+  heading.onmouseover = function(){
+    heading.style.color = "red";
+  };
+</script>
+</body>
+</html>

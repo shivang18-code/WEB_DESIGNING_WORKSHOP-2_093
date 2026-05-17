@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Employee Management System</title>
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family: Arial, sans-serif;
+    }
+    body{
+      background:#f4f6f9;
+      padding:30px;
+    }
+    .container{
+      max-width:900px;
+      margin:auto;
+      background:white;
+      padding:25px;
+      border-radius:10px;
+      box-shadow:0 0 10px rgba(0,0,0,0.1);
+    }
+    h1{
+      text-align:center;
+      margin-bottom:20px;
+      color:#333;
+    }
+    .form-group{
+      margin-bottom:15px;
+    }
+    label{
+      display:block;
+      margin-bottom:5px;
+      font-weight:bold;
+    }
+    input{
+      width:100%;
+      padding:10px;
+      border:1px solid #ccc;
+      border-radius:5px;
+    }
+    .btn-group{
+      margin-top:20px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+    button{
+      padding:10px 15px;
+      border:none;
+      background:#007bff;
+      color:white;
+      border-radius:5px;
+      cursor:pointer;
+    }
+    button:hover{
+      background:#0056b3;
+    }
+    #output{
+      margin-top:25px;
+      padding:15px;
+      background:#f1f1f1;
+      border-radius:5px;
+      min-height:100px;
+    }
+    .employee-card{
+      background:white;
+      padding:10px;
+      margin-bottom:10px;
+      border-left:5px solid #007bff;
+      border-radius:5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Employee Management System</h1>
+
+    <div class="form-group">
+      <label>Employee Name</label>
+      <input type="text" id="name" placeholder="Enter employee name">
+    </div>
+    <div class="form-group">
+      <label>Employee ID</label>
+      <input type="text" id="empId" placeholder="Enter employee ID">
+    </div>
+    <div class="form-group">
+      <label>Salary</label>
+      <input type="number" id="salary" placeholder="Enter salary">
+    </div>
+    <div class="form-group">
+      <label>Department</label>
+      <input type="text" id="department" placeholder="Enter department">
+    </div>
+    <button onclick="addEmployee()">Add Employee</button>
+    <div class="btn-group">
+      <button onclick="displayEmployees()">Display All Employees</button>
+      <button onclick="filterEmployees()">Salary > ₹50,000</button>
+      <button onclick="totalSalary()">Total Salary</button>
+      <button onclick="averageSalary()">Average Salary</button>
+      <button onclick="countDepartment()">Count by Department</button>
+    </div>
+    <div id="output"></div>
+  </div>
+  <script>
+    let employees = [];
+    function addEmployee() {
+      let name = document.getElementById("name").value;
+      let empId = document.getElementById("empId").value;
+      let salary = parseFloat(document.getElementById("salary").value);
+      let department = document.getElementById("department").value;
+      if(name === "" || empId === "" || isNaN(salary) || department === ""){
+        alert("Please fill all fields");
+        return;
+      }
+      let employee = {
+        name: name,
+        empId: empId,
+        salary: salary,
+        department: department
+      };
+      employees.push(employee);
+      alert("Employee Added Successfully!");
+      document.getElementById("name").value = "";
+      document.getElementById("empId").value = "";
+      document.getElementById("salary").value = "";
+      document.getElementById("department").value = "";
+    }
+    function displayEmployees() {
+      let output = document.getElementById("output");
+      if(employees.length === 0){
+        output.innerHTML = "<h3>No Employees Added</h3>";
+        return;
+      }
+      let result = "<h2>All Employees</h2>";
+      for(let emp of employees){
+        result += `
+          <div class="employee-card">
+            <p><strong>Name:</strong> ${emp.name}</p>
+            <p><strong>ID:</strong> ${emp.empId}</p>
+            <p><strong>Salary:</strong> ₹${emp.salary}</p>
+            <p><strong>Department:</strong> ${emp.department}</p>
+          </div>
+        `;
+      }
+      output.innerHTML = result;
+    }
+    function filterEmployees(){
+
+      let output = document.getElementById("output");
+
+      let filtered = employees.filter(emp => emp.salary > 50000);
+
+      if(filtered.length === 0){
+        output.innerHTML = "<h3>No employee with salary greater than ₹50,000</h3>";
+        return;
+      }
+      let result = "<h2>Employees with Salary > ₹50,000</h2>";
+      filtered.map(emp => {
+        result += `
+          <div class="employee-card">
+            <p><strong>Name:</strong> ${emp.name}</p>
+            <p><strong>Salary:</strong> ₹${emp.salary}</p>
+          </div>
+        `;
+      });
+
+      output.innerHTML = result;
+    }
+    function totalSalary(){
+      let total = 0;
+      for(let emp of employees){
+        total += emp.salary;
+      }
+      document.getElementById("output").innerHTML =
+        `<h2>Total Salary Payout: ₹${total}</h2>`;
+    }
+    function averageSalary(){
+      if(employees.length === 0){
+        document.getElementById("output").innerHTML =
+          "<h2>No employees available</h2>";
+        return;
+      }
+      let total = 0;
+      for(let emp of employees){
+        total += emp.salary;
+      }
+      let average = total / employees.length;
+      document.getElementById("output").innerHTML =
+        `<h2>Average Salary: ₹${average.toFixed(2)}</h2>`;
+    }
+    function countDepartment(){
+      let dept = prompt("Enter Department Name:");
+      let count = 0;
+      for(let index in employees){
+        if(
+          employees[index].department.toLowerCase() === dept.toLowerCase()
+        ){
+          count++;
+        }
+      }
+      document.getElementById("output").innerHTML =
+        `<h2>${count} employee(s) found in ${dept} department</h2>`;
+    }
+  </script>
+</body>
+</html>
